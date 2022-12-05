@@ -1,5 +1,4 @@
 require 'logger'
-require 'pry'
 
 class CustomLogger
   def initialize(app, **options)
