@@ -19,9 +19,7 @@ module Simpler
       method = env['REQUEST_METHOD'].downcase.to_sym
       path = env['PATH_INFO']
 
-      found_route = @routes.find { |route| route.match?(method, path) }
-      found_route&.path_params(path)
-      found_route
+      @routes.find { |route| route.match?(method, path) }
     end
 
     private
@@ -38,5 +36,6 @@ module Simpler
     def controller_from_string(controller_name)
       Object.const_get("#{controller_name.capitalize}Controller")
     end
+
   end
 end

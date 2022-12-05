@@ -5,10 +5,7 @@ class TestsController < Simpler::Controller
   end
 
   def create
-    status 201
+
   end
 
-  def show
-    @test = Test.find(id: params[:id])
-  end
 end
