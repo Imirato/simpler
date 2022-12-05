@@ -4,6 +4,7 @@ require 'sequel'
 require_relative 'router'
 require_relative 'controller'
 
+
 module Simpler
   class Application
 
@@ -28,13 +29,25 @@ module Simpler
 
     def call(env)
       route = @router.route_for(env)
+
+      return route_not_found if route.nil?
+
       controller = route.controller.new(env)
+      controller.request.params.merge!(route.params)
       action = route.action
 
       make_response(controller, action)
     end
 
     private
+
+    def route_not_found
+      [
+        404,
+        { 'Content-Type' => 'text/plain' },
+        ["404 Not Found\n"]
+      ]
+    end
 
     def require_app
       Dir["#{Simpler.root}/app/**/*.rb"].each { |file| require file }
@@ -53,6 +66,5 @@ module Simpler
     def make_response(controller, action)
       controller.make_response(action)
     end
-
   end
 end
